@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
+</head>
+
+<body>
+        <pre><code>
+Windows環境のみ
+screen-capture-recorderが必要です。
+もしインストールしていなければ<a href="https://github.com/rdp/screen-capture-recorder-to-video-windows-free/releases">こちらからDL</a>してインストールしてください。
+        </code></pre>
+        <pre><code>
+まず先に、このページを複数(2つのタブ)で開きます。
+その後、どちらか一方で下記の「Add Stream」ボタンをクリックします。
+その直後に別タブを表示してください。だんだんと映像が大きくなります。
+また、ウィンドウを激しく動かしたりとにかく動きの激しい映像を一定時間続けると、
+今度は映像が小さくなっていきます。
+        </code></pre>
+    <script>
+        const peer = new Peer({ key: 'ae6bc6a0-7eb6-478e-9c3e-428851d5c435' });
+        peer.on('open', id => {
+            console.log(`MyId:${id}`);
+            const room = peer.joinRoom('hoge');
+            room.on('open', _ => {
+                const btn = document.createElement('button');
+                btn.textContent = 'Add Stream';
+                btn.onclick = async _ => {
+                    const devices = await navigator.mediaDevices.enumerateDevices();
+                    const deviceId = devices.filter(device => device.label === 'screen-capture.recorder')[0].deviceId;
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
+                    room.replaceStream(stream);
+                };
+                document.body.appendChild(btn);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
