@@ -30,7 +30,7 @@ screen-capture-recorderが必要です。
                 btn.textContent = 'Add Stream';
                 btn.onclick = async _ => {
                     const devices = await navigator.mediaDevices.enumerateDevices();
-                    const deviceId = devices.filter(device => device.label === 'screen-capture.recorder')[0].deviceId;
+                    const deviceId = devices.filter(device => device.label === 'screen-capturerecorder')[0].deviceId;
                     const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId } });
                     room.replaceStream(stream);
                 };
